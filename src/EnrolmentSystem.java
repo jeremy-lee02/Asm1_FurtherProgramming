@@ -91,11 +91,14 @@ public abstract class EnrolmentSystem implements StudentEnrolmentManager {
             menu();
             option = getOption();
             switch (option){
-                case 1 : system.add();break;
-                case 2 : system.update();break;
-                case 3 : system.delete();break;
-                case 4 : system.getOne();break;
-                case 5 : readCsv("src\\default.csv");break;
+                case 1 :
+                    system.add();
+                    option = 0;
+                    break;
+                case 2 : system.update();option = 0;break;
+                case 3 : system.delete();option = 0;break;
+                case 4 : system.getOne();option = 0;break;
+                case 5 : readCsv("src\\default.csv");option = 0;break;
                 case 0: break;
             }
         }while (option!=0);
