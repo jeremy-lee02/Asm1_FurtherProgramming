@@ -1,9 +1,16 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+
 public abstract class EnrolmentSystem implements StudentEnrolmentManager {
+    public static ArrayList<Student> studentList = new ArrayList<Student>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
+
+
 
 
     public static void menu(){
@@ -22,6 +29,32 @@ public abstract class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Enter your Choice: ");
         option = scanner.nextInt();
         return option;
+    }
+
+    // Read csv file
+    public static void readCsv(String filename){
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
+            String line = "";
+            System.out.printf("%-50s", "SID");
+            System.out.printf("%-50s", "Student Name");
+            System.out.printf("%-50s", "Date of birth");
+            System.out.printf("%-50s", "CID");
+            System.out.printf("%-50s", "Course name");
+            System.out.printf("%-50s", "Credits");
+            System.out.printf("%-50s", "Semester");
+            System.out.println();
+            while ((line = bufferedReader.readLine()) != null){
+                String [] row = line.split(",");
+                for (int i = 0; i < row.length; i++){
+                    System.out.printf("%-50s", row[i]);
+                }
+                System.out.println();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -62,7 +95,7 @@ public abstract class EnrolmentSystem implements StudentEnrolmentManager {
                 case 2 : system.update();break;
                 case 3 : system.delete();break;
                 case 4 : system.getOne();break;
-                case 5 : system.getAll();break;
+                case 5 : readCsv("src\\default.csv");break;
                 case 0: break;
             }
         }while (option!=0);
