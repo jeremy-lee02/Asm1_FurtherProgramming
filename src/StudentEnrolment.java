@@ -1,11 +1,10 @@
-package A1_FurtherProgramming;
 
-public class StudentEnrollment {
+public class StudentEnrolment {
     private Student student;
     private Course course;
     private String semester;
 
-    public StudentEnrollment() {
+    public StudentEnrolment() {
 
     }
 

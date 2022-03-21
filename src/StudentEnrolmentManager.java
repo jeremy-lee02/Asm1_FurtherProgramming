@@ -1,10 +1,10 @@
-package A1_FurtherProgramming;
+
 
 public interface StudentEnrolmentManager {
-    void add();
-    void update();
-    void delete();
-    void getOne();
-    void getAll();
+    abstract void add();
+    abstract void update();
+    abstract void delete();
+    abstract void getOne();
+    abstract void getAll();
 
 }

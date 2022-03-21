@@ -1,6 +1,3 @@
-package A1_FurtherProgramming;
-
-
 
 public class Student {
     private String studentId;

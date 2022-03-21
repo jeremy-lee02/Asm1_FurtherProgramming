@@ -1,6 +1,3 @@
-package A1_FurtherProgramming;
-
-
 
 public class Course {
     private String courseId;
