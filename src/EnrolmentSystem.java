@@ -8,8 +8,10 @@ import java.util.Scanner;
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
     public static ArrayList<Student> studentList = new ArrayList<Student>();
+    public static ArrayList<Course> courseList = new ArrayList<Course>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
 
+    // Menu option
     public static void menu(){
         System.out.println("Welcome to Enrolment System:");
         System.out.println("----------------------------");
@@ -20,6 +22,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("[5] Display All Records");
         System.out.println("[0] Exit");
     }
+    // Get user's input
     public static int getOption(){
         int option;
         Scanner scanner = new Scanner(System.in);
@@ -29,26 +32,45 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     }
 
     // Read csv file
+    // Add data to student and course list
     public static void readCsv(String filename){
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
             String line = "";
-            System.out.printf("%-50s", "SID");
-            System.out.printf("%-50s", "Student Name");
-            System.out.printf("%-50s", "Date of birth");
-            System.out.printf("%-50s", "CID");
-            System.out.printf("%-50s", "Course name");
-            System.out.printf("%-50s", "Credits");
-            System.out.printf("%-50s", "Semester");
-            System.out.println();
             while ((line = bufferedReader.readLine()) != null){
+                boolean studentIsAdded = false;
+                boolean courseIsAdded = false;
                 String [] row = line.split(",");
-                for (int i = 0; i < row.length; i++){
-                    System.out.printf("%-50s", row[i]);
+                // Check if students and course is in the list.
+                // Add student and course to the list.
+                for (Student s: studentList
+                     ) {
+                    if (s.getStudentId().equals(row[0])){
+                        studentIsAdded = true;
+                        break;
+                    }
                 }
-                System.out.println();
-            }
+                if (!studentIsAdded){
+                    studentList.add(new Student(row[0], row[1],row[2]));
+                }
+                for (Course c:courseList
+                     ) {
+                    if (c.getCourseId().equals(row[3])){
+                        courseIsAdded = true;
+                        break;
+                    }
+                }
+                if (!courseIsAdded){
+                    courseList.add(new Course(row[3], row[4], row[5]));
+                }
 
+                // Add enrolments into list
+                studentEnrolmentList.add(new StudentEnrolment(new Student(row[0], row[1],row[2]),new Course(row[3], row[4], row[5]),row[6]));
+
+            }
+            System.out.println(studentList);
+            System.out.println(courseList);
+            System.out.println(studentEnrolmentList);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -78,7 +100,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public void getAll() {
         System.out.println("5");
     }
-    
+
 
     public static void main(String[] args) {
         EnrolmentSystem system = new EnrolmentSystem();
@@ -95,7 +117,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 case 3 : system.delete();option = 0;break;
                 case 4 : system.getOne();option = 0;break;
                 case 5 : readCsv("src\\default.csv");option = 0;break;
-                case 0: break;
             }
         }while (option!=0);
 

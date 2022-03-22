@@ -8,6 +8,12 @@ public class StudentEnrolment {
 
     }
 
+    public StudentEnrolment(Student student, Course course, String semester) {
+        this.student = student;
+        this.course = course;
+        this.semester = semester;
+    }
+
     public Student getStudent() {
         return student;
     }

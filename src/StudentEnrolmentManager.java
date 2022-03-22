@@ -1,5 +1,4 @@
 
-
 public interface StudentEnrolmentManager {
      void add();
      void update();
