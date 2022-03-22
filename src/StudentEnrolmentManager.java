@@ -1,10 +1,10 @@
 
 
 public interface StudentEnrolmentManager {
-    abstract void add();
-    abstract void update();
-    abstract void delete();
-    abstract void getOne();
-    abstract void getAll();
+     void add();
+     void update();
+     void delete();
+     void getOne();
+     void getAll();
 
 }

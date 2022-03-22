@@ -6,12 +6,9 @@ import java.util.Scanner;
 
 
 
-public abstract class EnrolmentSystem implements StudentEnrolmentManager {
+public class EnrolmentSystem implements StudentEnrolmentManager {
     public static ArrayList<Student> studentList = new ArrayList<Student>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
-
-
-
 
     public static void menu(){
         System.out.println("Welcome to Enrolment System:");
@@ -56,36 +53,35 @@ public abstract class EnrolmentSystem implements StudentEnrolmentManager {
             e.printStackTrace();
         }
     }
+    // CRUD method
+    @Override
+    public void add() {
+        System.out.println("1");
+    }
 
+    @Override
+    public void update() {
+        System.out.println("2");
+    }
 
+    @Override
+    public void delete() {
+        System.out.println("3");
+    }
+
+    @Override
+    public void getOne() {
+        System.out.println("4");
+    }
+
+    @Override
+    public void getAll() {
+        System.out.println("5");
+    }
+    
 
     public static void main(String[] args) {
-        StudentEnrolmentManager system = new StudentEnrolmentManager()  {
-            @Override
-            public void add() {
-                System.out.println("1");
-            }
-
-            @Override
-            public void update() {
-                System.out.println("2");
-            }
-
-            @Override
-            public void delete() {
-                System.out.println("3");
-            }
-
-            @Override
-            public void getOne() {
-                System.out.println("4");
-            }
-
-            @Override
-            public void getAll() {
-                System.out.println("5");
-            }
-        };
+        EnrolmentSystem system = new EnrolmentSystem();
         int option;
         do {
             menu();
