@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
+    Scanner scanner = new Scanner(System.in);
     public static ArrayList<Student> studentList = new ArrayList<Student>();
     public static ArrayList<Course> courseList = new ArrayList<Course>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
@@ -75,10 +76,51 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             e.printStackTrace();
         }
     }
+
+    //Display add
+    public void displayAdd(){
+        System.out.println("Display Student List:");
+        System.out.println(studentList);
+        System.out.println("Enter student Id to enrol:");
+    }
+    // Is valid student
+    public boolean isValidStudent(ArrayList<Student> studentList, String sID){
+        for (Student s: studentList
+             ) {
+            if (s.getStudentId().equals(sID)){
+                System.out.println("This student is valid!");
+                return true;
+            }
+        }
+        System.out.println("Invalid student");
+        return false;
+    }
+    public boolean isValidCourse(ArrayList<Course> courseList, String courseID){
+        for (Course c : courseList){
+//            System.out.println(c.getCourseName());
+            if (c.getCourseId().equals(courseID)){
+                System.out.println("Valid course!");
+                return true;
+            }
+        }
+        System.out.println("Invalid Course!");
+        return false;
+    }
     // CRUD method
     @Override
     public void add() {
-        System.out.println("1");
+        String input;
+        do {
+            displayAdd();
+            input = scanner.next();
+        }while (!isValidStudent(studentList,input));
+        do {
+            System.out.println("Display valid course:");
+            System.out.println(courseList);
+            System.out.println("Enter course id: ");
+            input = scanner.next();
+        }while (!isValidCourse(courseList,input));
+
     }
 
     @Override
@@ -104,6 +146,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     public static void main(String[] args) {
         EnrolmentSystem system = new EnrolmentSystem();
+        readCsv("src\\default.csv");
         int option;
         do {
             menu();
@@ -111,12 +154,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             switch (option){
                 case 1 :
                     system.add();
-                    option = 0;
                     break;
                 case 2 : system.update();option = 0;break;
                 case 3 : system.delete();option = 0;break;
                 case 4 : system.getOne();option = 0;break;
-                case 5 : readCsv("src\\default.csv");option = 0;break;
+                case 5 : system.getAll();option = 0;break;
             }
         }while (option!=0);
 
