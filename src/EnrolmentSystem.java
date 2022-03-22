@@ -111,10 +111,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     @Override
     public void add() {
         String input;
-//        do {
-//            displayAdd();
-//            input = scanner.next();
-//        }while (!isValidStudent(studentList,input));
+        do {
+            displayAdd();
+            input = scanner.next();
+        }while (!isValidStudent(studentList,input));
         do {
             System.out.println("Display valid course:");
             System.out.println(courseList);
