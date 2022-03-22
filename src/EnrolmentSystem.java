@@ -96,8 +96,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         return false;
     }
     public boolean isValidCourse(ArrayList<Course> courseList, String courseID){
+
         for (Course c : courseList){
-//            System.out.println(c.getCourseName());
+//
             if (c.getCourseId().equals(courseID)){
                 System.out.println("Valid course!");
                 return true;
@@ -110,16 +111,16 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     @Override
     public void add() {
         String input;
-        do {
-            displayAdd();
-            input = scanner.next();
-        }while (!isValidStudent(studentList,input));
+//        do {
+//            displayAdd();
+//            input = scanner.next();
+//        }while (!isValidStudent(studentList,input));
         do {
             System.out.println("Display valid course:");
             System.out.println(courseList);
-            System.out.println("Enter course id: ");
+            System.out.println("Enter course ID: ");
             input = scanner.next();
-        }while (!isValidCourse(courseList,input));
+        }while (!isValidCourse(courseList, input));
 
     }
 
@@ -145,7 +146,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
 
     public static void main(String[] args) {
-        EnrolmentSystem system = new EnrolmentSystem();
+        EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
         readCsv("src\\default.csv");
         int option;
         do {
@@ -153,12 +154,13 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             option = getOption();
             switch (option){
                 case 1 :
-                    system.add();
+                    enrolmentSystem.add();
                     break;
-                case 2 : system.update();option = 0;break;
-                case 3 : system.delete();option = 0;break;
-                case 4 : system.getOne();option = 0;break;
-                case 5 : system.getAll();option = 0;break;
+                case 2 :
+                    enrolmentSystem.update();option = 0;break;
+                case 3 : enrolmentSystem.delete();option = 0;break;
+                case 4 : enrolmentSystem.getOne();option = 0;break;
+                case 5 : enrolmentSystem.getAll();option = 0;break;
             }
         }while (option!=0);
 
