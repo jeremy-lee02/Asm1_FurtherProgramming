@@ -26,9 +26,6 @@ public class StudentEnrolment {
         return semester;
     }
 
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
 
     @Override
     public String toString() {

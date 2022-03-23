@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
     Scanner scanner = new Scanner(System.in);
-    public static ArrayList<Student> studentList = new ArrayList<Student>();
-    public static ArrayList<Course> courseList = new ArrayList<Course>();
+    public static ArrayList<Student> studentList = new ArrayList<>();
+    public static ArrayList<Course> courseList = new ArrayList<>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
 
     // Menu option
@@ -77,12 +77,37 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
     }
 
-    //Display add
-    public void displayAdd(){
+    //Display Student and Course
+    public void displayStudent(){
         System.out.println("Display Student List:");
-        System.out.println(studentList);
+        System.out.printf("%-30s" ,"Student ID");
+        System.out.printf("%-30s" ,"Student Name");
+        System.out.println();
+        System.out.println("---------------------------------------------");
+        for (Student s: studentList
+        ) {
+            System.out.printf("%-30s" ,s.getStudentId());
+            System.out.printf("%-30s" ,s.getStudentName());
+            System.out.println();
+        }
         System.out.println("Enter student Id to enrol:");
     }
+    public void displayCourse(){
+        System.out.println("Display valid course:");
+        System.out.printf("%-30s" ,"Course ID");
+        System.out.printf("%-30s" ,"Course Name");
+        System.out.println();
+        System.out.println("-------------------------------------------");
+        for (Course c: courseList
+             ) {
+            System.out.printf("%-30s" ,c.getCourseId());
+            System.out.printf("%-30s" ,c.getCourseName());
+            System.out.println();
+        }
+        System.out.println("Enter course ID: ");
+
+    }
+    // Input Validation
     // Is valid student
     public boolean isValidStudent(ArrayList<Student> studentList, String sID){
         for (Student s: studentList
@@ -95,8 +120,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Invalid student");
         return false;
     }
+    // Is valid course.
     public boolean isValidCourse(ArrayList<Course> courseList, String courseID){
-
         for (Course c : courseList){
 //
             if (c.getCourseId().equals(courseID)){
@@ -107,20 +132,61 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Invalid Course!");
         return false;
     }
+    public boolean isEnrol(Student student, Course course){
+        for (StudentEnrolment se: studentEnrolmentList
+             ) {
+            if ((se.getStudent().getStudentId().equals(student.getStudentId())) && se.getCourse().getCourseId().equals(course.getCourseId())){
+                System.out.println("Already enrolled this course! ");
+                return false;
+            }
+        }
+        System.out.println("Have not enrol to this course!");
+        return false;
+    }
+
+
+    public Student assignStudent(String sID){
+        Student newStudent = null;
+        for (Student s: studentList
+             ) {
+            if (sID.equals(s.getStudentId())){
+                newStudent = s;
+                break;
+            }
+        }
+        return newStudent;
+    }
+    public Course assignCourse(String cID){
+        Course newCourse = null;
+        for (Course c: courseList
+             ) {
+            if (cID.equals(c.getCourseId())){
+                newCourse = c;
+                break;
+            }
+        }
+        return newCourse;
+    }
+
     // CRUD method
     @Override
     public void add() {
+        Student s = null;
+        Course c = null;
         String input;
         do {
-            displayAdd();
+            displayStudent();
             input = scanner.next();
         }while (!isValidStudent(studentList,input));
+        s = assignStudent(input);
         do {
-            System.out.println("Display valid course:");
-            System.out.println(courseList);
-            System.out.println("Enter course ID: ");
+            displayCourse();
             input = scanner.next();
         }while (!isValidCourse(courseList, input));
+        c = assignCourse(input);
+        System.out.println(s);
+        System.out.println(c);
+        isEnrol(s,c);
 
     }
 
@@ -141,7 +207,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     @Override
     public void getAll() {
-        System.out.println("5");
+        System.out.println(studentList);
     }
 
 

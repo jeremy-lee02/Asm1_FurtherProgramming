@@ -26,19 +26,6 @@ public class Student {
         return birthDate;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-
     @Override
     public String toString() {
         return "Student{" +
