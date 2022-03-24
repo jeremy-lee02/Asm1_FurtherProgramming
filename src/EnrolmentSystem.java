@@ -3,7 +3,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
@@ -125,11 +126,21 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         for (Course c : courseList){
 //
             if (c.getCourseId().equals(courseID)){
-                System.out.println("Valid course!");
                 return true;
             }
         }
         System.out.println("Invalid Course!");
+        return false;
+    }
+    // Semester Validation
+    public boolean isValidSem(String sem){
+        String regex = "202[0-4][A-C]";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(sem);
+        if (matcher.find()){
+            return true;
+        }
+        System.out.println("Invalid Sem");
         return false;
     }
     public boolean isEnrol(Student student, Course course){
@@ -140,8 +151,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 return false;
             }
         }
-        System.out.println("Have not enrol to this course!");
-        return false;
+        return true;
     }
 
 
@@ -179,15 +189,22 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             input = scanner.next();
         }while (!isValidStudent(studentList,input));
         s = assignStudent(input);
+        // Check if is already enrolled
         do {
-            displayCourse();
+            do {
+                displayCourse();
+                input = scanner.next();
+            }while (!isValidCourse(courseList, input));
+            c = assignCourse(input);
+        }while (!(isEnrol(s,c)));
+        do {
+            System.out.println("Enter Semester:");
             input = scanner.next();
-        }while (!isValidCourse(courseList, input));
-        c = assignCourse(input);
-        System.out.println(s);
-        System.out.println(c);
-        isEnrol(s,c);
-
+        }while (!isValidSem(input));
+        StudentEnrolment se = new StudentEnrolment(s,c,input);
+        studentEnrolmentList.add(se);
+        System.out.println("Enrol Success!");
+        System.out.println(s.getStudentId()+", " + s.getStudentName() + ", " + c.getCourseId() + ", " +c.getCourseName() +", " + se.getSemester());
     }
 
     @Override
