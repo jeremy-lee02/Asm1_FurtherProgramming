@@ -43,12 +43,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         while (!reading){
             System.out.println("Enter file name in src folder. Press '1' to load default file.");
             fileName = scanner.nextLine();
-            String defaultName  = "default.csv";
+            String defaultName  = "src\\default.csv";
             if (!fileName.equals("1")){
-                defaultName = "src\\"+fileName;
+                defaultName = "src\\"+ fileName;
             }
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\"+defaultName));
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(defaultName));
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null){
                     boolean studentIsAdded = false;
