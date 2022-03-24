@@ -1,6 +1,7 @@
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -8,7 +9,7 @@ import java.util.regex.Pattern;
 
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Student> studentList = new ArrayList<>();
     public static ArrayList<Course> courseList = new ArrayList<>();
     public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
@@ -35,47 +36,58 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     // Read csv file
     // Add data to student and course list
-    public static void readCsv(String filename){
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null){
-                boolean studentIsAdded = false;
-                boolean courseIsAdded = false;
-                String [] row = line.split(",");
-                // Check if students and course is in the list.
-                // Add student and course to the list.
-                for (Student s: studentList
-                     ) {
-                    if (s.getStudentId().equals(row[0])){
-                        studentIsAdded = true;
-                        break;
-                    }
-                }
-                if (!studentIsAdded){
-                    studentList.add(new Student(row[0], row[1],row[2]));
-                }
-                for (Course c:courseList
-                     ) {
-                    if (c.getCourseId().equals(row[3])){
-                        courseIsAdded = true;
-                        break;
-                    }
-                }
-                if (!courseIsAdded){
-                    courseList.add(new Course(row[3], row[4], row[5]));
-                }
+    public static String readCsv(){
+        boolean reading = false;
+        String fileName = "1";
 
-                // Add enrolments into list
-                studentEnrolmentList.add(new StudentEnrolment(new Student(row[0], row[1],row[2]),new Course(row[3], row[4], row[5]),row[6]));
-
+        while (!reading){
+            System.out.println("Enter file name in src folder. Press '1' to load default file.");
+            fileName = scanner.nextLine();
+            String defaultName  = "default.csv";
+            if (!fileName.equals("1")){
+                defaultName = "src\\"+fileName;
             }
-            System.out.println(studentList);
-            System.out.println(courseList);
-            System.out.println(studentEnrolmentList);
-        }catch (Exception e){
-            e.printStackTrace();
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new FileReader("src\\"+defaultName));
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null){
+                    boolean studentIsAdded = false;
+                    boolean courseIsAdded = false;
+                    String [] row = line.split(",");
+                    // Check if students and course is in the list.
+                    // Add student and course to the list.
+                    for (Student s: studentList
+                    ) {
+                        if (s.getStudentId().equals(row[0])){
+                            studentIsAdded = true;
+                            break;
+                        }
+                    }
+                    if (!studentIsAdded){
+                        studentList.add(new Student(row[0], row[1],row[2]));
+                    }
+                    for (Course c:courseList
+                    ) {
+                        if (c.getCourseId().equals(row[3])){
+                            courseIsAdded = true;
+                            break;
+                        }
+                    }
+                    if (!courseIsAdded){
+                        courseList.add(new Course(row[3], row[4], row[5]));
+                    }
+
+                    // Add enrolments into list
+                    studentEnrolmentList.add(new StudentEnrolment(new Student(row[0], row[1],row[2]),new Course(row[3], row[4], row[5]),row[6]));
+                }
+                System.out.println("Read file success!");
+                reading = true;
+            }catch (Exception e){
+                System.out.println("Cannot find file!");
+                reading = false;
+            }
         }
+        return fileName;
     }
 
     //Display Student and Course
@@ -114,11 +126,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         for (Student s: studentList
              ) {
             if (s.getStudentId().equals(sID)){
-                System.out.println("This student is valid!");
                 return true;
             }
         }
-        System.out.println("Invalid student");
         return false;
     }
     // Is valid course.
@@ -129,7 +139,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 return true;
             }
         }
-        System.out.println("Invalid Course!");
         return false;
     }
     // Semester Validation
@@ -140,14 +149,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         if (matcher.find()){
             return true;
         }
-        System.out.println("Invalid Sem");
         return false;
     }
     public boolean isEnrol(Student student, Course course){
         for (StudentEnrolment se: studentEnrolmentList
              ) {
             if ((se.getStudent().getStudentId().equals(student.getStudentId())) && se.getCourse().getCourseId().equals(course.getCourseId())){
-                System.out.println("Already enrolled this course! ");
                 return false;
             }
         }
@@ -187,16 +194,34 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         do {
             displayStudent();
             input = scanner.next();
+            if (!isValidStudent(studentList,input)){
+                System.out.println("Invalid Student");
+            }
         }while (!isValidStudent(studentList,input));
+        System.out.println("This student is Valid!");
         s = assignStudent(input);
-        // Check if is already enrolled
+        System.out.println("Display student enrolment:");
+        for (StudentEnrolment stE:studentEnrolmentList
+        ) {
+            if (input.equals(stE.getStudent().getStudentId())){
+                System.out.println(stE);
+            }
+        }
         do {
             do {
                 displayCourse();
                 input = scanner.next();
+                if (!isValidCourse(courseList,input)){
+                    System.out.println("No course with " + input +" ID!");
+                }
             }while (!isValidCourse(courseList, input));
+            System.out.println("This Course is Valid!");
             c = assignCourse(input);
+            if (!isEnrol(s,c)){
+                System.out.println(s.getStudentName() + " has already enrolled to " + c.getCourseName());
+            }
         }while (!(isEnrol(s,c)));
+        System.out.println(s.getStudentName() + " can enrol to " + c.getCourseName());
         do {
             System.out.println("Enter Semester:");
             input = scanner.next();
@@ -228,9 +253,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     }
 
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
-        readCsv("src\\default.csv");
+        String fileName = readCsv();
         int option;
         do {
             menu();
