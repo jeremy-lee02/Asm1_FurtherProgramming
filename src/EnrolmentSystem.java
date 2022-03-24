@@ -134,7 +134,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     // Is valid course.
     public boolean isValidCourse(ArrayList<Course> courseList, String courseID){
         for (Course c : courseList){
-//
             if (c.getCourseId().equals(courseID)){
                 return true;
             }
@@ -225,6 +224,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         do {
             System.out.println("Enter Semester:");
             input = scanner.next();
+            if (!isValidSem(input)){
+                System.out.println("Invalid Semester!");
+            }
         }while (!isValidSem(input));
         StudentEnrolment se = new StudentEnrolment(s,c,input);
         studentEnrolmentList.add(se);
@@ -272,7 +274,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 case 5 : enrolmentSystem.getAll();option = 0;break;
             }
         }while (option!=0);
-
     }
 
 }
