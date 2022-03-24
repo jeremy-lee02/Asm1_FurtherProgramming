@@ -103,7 +103,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             System.out.printf("%-30s" ,s.getStudentName());
             System.out.println();
         }
-        System.out.println("Enter student Id to enrol:");
     }
     public void displayCourse(){
         System.out.println("Display valid course:");
@@ -192,6 +191,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         String input;
         do {
             displayStudent();
+            System.out.println("Enter student Id to enrol:");
             input = scanner.next();
             if (!isValidStudent(studentList,input)){
                 System.out.println("Invalid Student");
@@ -199,11 +199,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }while (!isValidStudent(studentList,input));
         System.out.println("This student is Valid!");
         s = assignStudent(input);
-        System.out.println("Display student enrolment:");
+        System.out.println("Display "+ assignStudent(input).getStudentName() + " Enrolment:" );
         for (StudentEnrolment stE:studentEnrolmentList
         ) {
             if (input.equals(stE.getStudent().getStudentId())){
-                System.out.println(stE);
+                System.out.println("* "+stE.getCourse().getCourseName() + " with course id: " + stE.getCourse().getCourseId());
             }
         }
         do {
@@ -234,27 +234,59 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println(s.getStudentId()+", " + s.getStudentName() + ", " + c.getCourseId() + ", " +c.getCourseName() +", " + se.getSemester());
     }
 
+    // Get student ID
+    // Ask to add or delete.
     @Override
     public void update() {
-        System.out.println("2");
-    }
 
+    }
+    // Get student ID and Course ID to delete the enrolment.
     @Override
     public void delete() {
-        System.out.println("3");
-    }
+        String input;
+        displayStudent();
+        ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
+        //Ask student ID and display
+        do {
+            System.out.println("Enter student ID:");
+            input = scanner.nextLine();
+        }while (!isValidStudent(studentList,input));
+        // Display that student's enrolment
+        System.out.println("Display "+ assignStudent(input).getStudentName() + " Enrolment:" );
+        for (StudentEnrolment stE:studentEnrolmentList
+        ) {
+            if (input.equals(stE.getStudent().getStudentId())){
+                enrolments.add(stE);
+                System.out.println("* "+stE.getCourse().getCourseName() + " with course id: " + stE.getCourse().getCourseId());
+            }
+        }
+        do {
+            System.out.println("Enter Course ID of that student:");
 
+
+
+
+        }while (!isValidCourse(courseList,input)); // courseList will be changed!
+
+
+
+    }
+    // Get student ID or Course ID.
+    // Display Student info Or Course info.
     @Override
     public void getOne() {
         System.out.println("4");
     }
-
+    // Display all Enrolment list.
     @Override
     public void getAll() {
         System.out.println(studentList);
     }
 
-
+    //TODO:
+    // 1. Save file.
+    // 2. Check if file is saved before exit.
+    // 3. Ask to save if it have not.
 
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
@@ -269,7 +301,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     break;
                 case 2 :
                     enrolmentSystem.update();option = 0;break;
-                case 3 : enrolmentSystem.delete();option = 0;break;
+                case 3 : enrolmentSystem.delete();break;
                 case 4 : enrolmentSystem.getOne();option = 0;break;
                 case 5 : enrolmentSystem.getAll();option = 0;break;
             }
