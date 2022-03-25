@@ -298,9 +298,33 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("4");
     }
     // Display all Enrolment list.
+    public static void displayAll(){
+        System.out.println("Display enrolments: ");
+        System.out.printf("%-20s", "SID");
+        System.out.printf("%-30s", "Student Name");
+        System.out.printf("%-20s", "Date of birth");
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-40s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.printf("%-20s", "Semester");
+        System.out.println();
+
+    }
     @Override
     public void getAll() {
-        System.out.println(studentList);
+        displayAll();
+        for (StudentEnrolment se: studentEnrolmentList
+             ) {
+                System.out.printf("%-20s", se.getStudent().getStudentId());
+                System.out.printf("%-30s", se.getStudent().getStudentName());
+                System.out.printf("%-20s", se.getStudent().getBirthDate());
+                System.out.printf("%-20s", se.getCourse().getCourseId());
+                System.out.printf("%-40s", se.getCourse().getCourseName());
+                System.out.printf("%-20s", se.getCourse().getCredits());
+                System.out.printf("%-20s", se.getSemester());
+                System.out.println();
+        }
+
     }
 
     //TODO:
