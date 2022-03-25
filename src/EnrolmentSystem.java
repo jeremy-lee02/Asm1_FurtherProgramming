@@ -214,7 +214,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     System.out.println("No course with " + input +" ID!");
                 }
             }while (!isValidCourse(courseList, input));
-            System.out.println("This Course is Valid!");
+            //System.out.println("This Course is Valid!");
             c = assignCourse(input);
             if (!isEnrol(s,c)){
                 System.out.println(s.getStudentName() + " has already enrolled to " + c.getCourseName());
@@ -243,33 +243,53 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     // Get student ID and Course ID to delete the enrolment.
     @Override
     public void delete() {
-        String input;
+        Student s = null;
+        Course c = null;
+        String studentID;
+        String courseID;
         displayStudent();
         ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
+        ArrayList<Course> validCourse = new ArrayList<>();
         //Ask student ID and display
         do {
             System.out.println("Enter student ID:");
-            input = scanner.nextLine();
-        }while (!isValidStudent(studentList,input));
+            studentID = scanner.nextLine();
+        }while (!isValidStudent(studentList,studentID));
         // Display that student's enrolment
-        System.out.println("Display "+ assignStudent(input).getStudentName() + " Enrolment:" );
+        System.out.println("Display "+ assignStudent(studentID).getStudentName() + " Enrolment:" );
+        s = assignStudent(studentID);
         for (StudentEnrolment stE:studentEnrolmentList
         ) {
-            if (input.equals(stE.getStudent().getStudentId())){
+            if (studentID.equals(stE.getStudent().getStudentId())){
                 enrolments.add(stE);
+                validCourse.add(stE.getCourse());
                 System.out.println("* "+stE.getCourse().getCourseName() + " with course id: " + stE.getCourse().getCourseId());
             }
         }
         do {
             System.out.println("Enter Course ID of that student:");
-
-
-
-
-        }while (!isValidCourse(courseList,input)); // courseList will be changed!
-
-
-
+            courseID = scanner.nextLine();
+            if (!isValidCourse(validCourse,courseID)){
+                System.out.println("Invalid");
+            }
+        }while (!isValidCourse(validCourse,courseID));
+        c = assignCourse(courseID);
+        System.out.println(s);
+        System.out.println(c);
+        StudentEnrolment oneEnrolment = null;
+        boolean isFound = false;
+        for (StudentEnrolment se: studentEnrolmentList
+             ) {
+            isFound = se.getCourse().getCourseId().equalsIgnoreCase(courseID) && se.getStudent().getStudentId().equalsIgnoreCase(studentID);
+            if (isFound) {
+                oneEnrolment = se;
+            }
+        }
+        studentEnrolmentList.remove(oneEnrolment);
+        for (StudentEnrolment ste: studentEnrolmentList
+             ) {
+            System.out.println(ste);
+        }
     }
     // Get student ID or Course ID.
     // Display Student info Or Course info.
