@@ -159,7 +159,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         return true;
     }
 
-
+    // Get Student and Course Object base on ID.
     public Student assignStudent(String sID){
         Student newStudent = null;
         for (Student s: studentList
@@ -286,16 +286,50 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }
         studentEnrolmentList.remove(oneEnrolment);
-        for (StudentEnrolment ste: studentEnrolmentList
-             ) {
-            System.out.println(ste);
-        }
     }
     // Get student ID or Course ID.
     // Display Student info Or Course info.
+    public void displayStudentCourses(){
+        String sID;
+        do {
+            displayStudent();
+            System.out.println("Enter student ID:");
+            sID = scanner.nextLine();
+            if (!isValidStudent(studentList,sID)){
+                System.out.println("There is no student with "+sID +" id");
+            }
+        }while (!isValidStudent(studentList,sID));
+        System.out.println("Valid Student");
+        System.out.println("Display "+ assignStudent(sID).getStudentName() + " courses:");
+        for (StudentEnrolment se: studentEnrolmentList
+             ) {
+            if (se.getStudent().getStudentId().equals(sID)){
+                System.out.println("* " + se.getCourse().getCourseName());
+            }
+        }
+    }
+
     @Override
     public void getOne() {
-        System.out.println("4");
+        int option;
+        do {
+            System.out.println("[1] Print student's courses");
+            System.out.println("[2] Print students in a course");
+            System.out.println("[3] Print courses in semester");
+            option = getOption();
+            switch (option){
+                case 1:
+                    displayStudentCourses();
+                    break;
+                case 2:
+                    System.out.println("Hello 2");
+                    break;
+                case 3:
+                    System.out.println("Hello 3");
+                    break;
+            }
+        }while(option!=0);
+
     }
     // Display all Enrolment list.
     public static void displayAll(){
@@ -346,8 +380,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 case 2 :
                     enrolmentSystem.update();option = 0;break;
                 case 3 : enrolmentSystem.delete();break;
-                case 4 : enrolmentSystem.getOne();option = 0;break;
-                case 5 : enrolmentSystem.getAll();option = 0;break;
+                case 4 : enrolmentSystem.getOne();break;
+                case 5 : enrolmentSystem.getAll();break;
             }
         }while (option!=0);
     }
