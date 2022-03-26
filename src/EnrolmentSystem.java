@@ -238,7 +238,101 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     // Ask to add or delete.
     @Override
     public void update() {
-
+        String sID = null;
+        String course = null;
+        int option = 0;
+        Student s = null;
+        Course c = null;
+        do {
+            displayStudent();
+            System.out.println("Enter student Id to enrol:");
+            sID = scanner.next();
+            if (!isValidStudent(studentList,sID)){
+                System.out.println("Invalid Student");
+            }
+        }while (!isValidStudent(studentList,sID));
+        System.out.println("This student is Valid!");
+        System.out.println("Display "+ assignStudent(sID).getStudentName() + " courses:");
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-40s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.printf("%-20s", "Semester");
+        System.out.println();
+        for (StudentEnrolment se:studentEnrolmentList
+        ) {
+            if (sID.equals(se.getStudent().getStudentId())){
+                System.out.printf("%-20s", se.getCourse().getCourseId());
+                System.out.printf("%-40s", se.getCourse().getCourseName());
+                System.out.printf("%-20s", se.getCourse().getCredits());
+                System.out.printf("%-20s", se.getSemester());
+                System.out.println();
+            }
+        }
+        s = assignStudent(sID);
+        do {
+            System.out.println("[1] Add");
+            System.out.println("[2] Delete");
+            option = getOption();
+            switch (option){
+                case 1:
+                    do {
+                        do {
+                            displayCourse();
+                            course = scanner.next();
+                            if (!isValidCourse(courseList,course)){
+                                System.out.println("No course with " + course +" ID!");
+                            }
+                        }while (!isValidCourse(courseList, course));
+                        //System.out.println("This Course is Valid!");
+                        c = assignCourse(course);
+                        if (!isEnrol(s,c)){
+                            System.out.println(s.getStudentName() + " has already enrolled to " + c.getCourseName());
+                        }
+                    }while (!(isEnrol(s,c)));
+                    System.out.println(s.getStudentName() + " can enrol to " + c.getCourseName());
+                    String sem = null;
+                    do {
+                        System.out.println("Enter Semester:");
+                        sem = scanner.next();
+                        if (!isValidSem(sem)){
+                            System.out.println("Invalid Semester!");
+                        }
+                    }while (!isValidSem(sem));
+                    StudentEnrolment se = new StudentEnrolment(s,c,sem);
+                    studentEnrolmentList.add(se);
+                    System.out.println("Enrol Success!");
+                    System.out.println(s.getStudentId()+", " + s.getStudentName() + ", " + c.getCourseId() + ", " +c.getCourseName() +", " + se.getSemester());
+                    option = 0;
+                    break;
+                case 2:
+                    ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
+                    ArrayList<Course> validCourse = new ArrayList<>();
+                    for (StudentEnrolment stE:studentEnrolmentList
+                    ) {
+                        if (sID.equals(stE.getStudent().getStudentId())){
+                            enrolments.add(stE);
+                            validCourse.add(stE.getCourse());
+                        }
+                    }
+                    do {
+                        //System.out.println("Enter Course ID:");
+                        course = scanner.nextLine();
+                    }while (!isValidCourse(validCourse,course));
+                    c = assignCourse(course);
+                    StudentEnrolment oneEnrolment = null;
+                    boolean isFound = false;
+                    for (StudentEnrolment stE: studentEnrolmentList
+                    ) {
+                        isFound = stE.getCourse().getCourseId().equalsIgnoreCase(course) && stE.getStudent().getStudentId().equalsIgnoreCase(sID);
+                        if (isFound) {
+                            oneEnrolment = stE;
+                        }
+                    }
+                    studentEnrolmentList.remove(oneEnrolment);
+                    System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in" + oneEnrolment.getSemester());
+                    break;
+            }
+        }while(option!=0);
 
     }
     // Get student ID and Course ID to delete the enrolment.
@@ -287,6 +381,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }
         studentEnrolmentList.remove(oneEnrolment);
+        System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in" + oneEnrolment.getSemester());
     }
 
     // Get student ID or Course ID.
