@@ -12,7 +12,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Student> studentList = new ArrayList<>();
     public static ArrayList<Course> courseList = new ArrayList<>();
-    public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
+    public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<StudentEnrolment>();
 
     // Menu option
     public static void menu(){
@@ -287,6 +287,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         studentEnrolmentList.remove(oneEnrolment);
     }
+
     // Get student ID or Course ID.
     // Display Student info Or Course info.
     public void displayStudentCourses(){
@@ -301,14 +302,87 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }while (!isValidStudent(studentList,sID));
         System.out.println("Valid Student");
         System.out.println("Display "+ assignStudent(sID).getStudentName() + " courses:");
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-40s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.printf("%-20s", "Semester");
+        System.out.println();
         for (StudentEnrolment se: studentEnrolmentList
              ) {
             if (se.getStudent().getStudentId().equals(sID)){
-                System.out.println("* " + se.getCourse().getCourseName());
+                System.out.printf("%-20s", se.getCourse().getCourseId());
+                System.out.printf("%-40s", se.getCourse().getCourseName());
+                System.out.printf("%-20s", se.getCourse().getCredits());
+                System.out.printf("%-20s", se.getSemester());
+                System.out.println();
             }
         }
     }
-
+    public void displayCourseStudents(){
+        String cID;
+        do {
+            displayCourse();
+            cID = scanner.nextLine();
+            if (!isValidStudent(studentList,cID)){
+                System.out.println("There is no student with "+cID +" id");
+            }
+        }while (!isValidCourse(courseList,cID));
+        System.out.println("Valid Student");
+        System.out.println("Display student in "+ assignCourse(cID).getCourseName() + " course:");
+        System.out.printf("%-20s", "SID");
+        System.out.printf("%-30s", "Student name");
+        System.out.printf("%-20s", "Date of Birth:");
+        System.out.println();
+        for (StudentEnrolment se: studentEnrolmentList
+        ) {
+            if (se.getCourse().getCourseId().equals(cID)){
+                System.out.printf("%-20s", se.getStudent().getStudentId());
+                System.out.printf("%-30s", se.getStudent().getStudentName());
+                System.out.printf("%-20s", se.getStudent().getBirthDate());
+                System.out.println();
+            }
+        }
+    }
+    public void displayCoursesSem(){
+        String sem;
+        do {
+            System.out.println("Enter a semester: ");
+            sem = scanner.nextLine();
+            if (!isValidSem(sem)){
+                System.out.println("Invalid Sem");
+            }
+        }while (!isValidSem(sem));
+        System.out.println("Valid Semester");
+        System.out.println("Display courses in " +sem + ":");
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-35s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.println();
+        ArrayList<Course> semCourseList = new ArrayList<>();
+        boolean isAdded = false;
+        for (StudentEnrolment se : studentEnrolmentList
+             ) {
+            if (sem.equals(se.getSemester())){
+                for (Course c: semCourseList
+                     ) {
+                    if (c.getCourseId().equals(se.getCourse().getCourseId())){
+                        isAdded = true;
+                        break;
+                    }
+                }
+                if (!isAdded) {
+                    semCourseList.add(se.getCourse());
+                }
+            }
+        }
+        for (Course c: semCourseList
+             ) {
+            System.out.printf("%-20s", c.getCourseId());
+            System.out.printf("%-35s", c.getCourseName());
+            System.out.printf("%-20s", c.getCredits());
+            System.out.println();
+        }
+    }
     @Override
     public void getOne() {
         int option;
@@ -322,10 +396,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     displayStudentCourses();
                     break;
                 case 2:
-                    System.out.println("Hello 2");
+                    displayCourseStudents();
                     break;
                 case 3:
-                    System.out.println("Hello 3");
+                    displayCoursesSem();
                     break;
             }
         }while(option!=0);
