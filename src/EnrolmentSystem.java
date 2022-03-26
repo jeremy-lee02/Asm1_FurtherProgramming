@@ -12,7 +12,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Student> studentList = new ArrayList<>();
     public static ArrayList<Course> courseList = new ArrayList<>();
-    public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<StudentEnrolment>();
+    public static ArrayList<StudentEnrolment> studentEnrolmentList = new ArrayList<>();
 
     // Menu option
     public static void menu(){
@@ -353,11 +353,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }while (!isValidSem(sem));
         System.out.println("Valid Semester");
-        System.out.println("Display courses in " +sem + ":");
-        System.out.printf("%-20s", "CID");
-        System.out.printf("%-35s", "Course name");
-        System.out.printf("%-20s", "Credits");
-        System.out.println();
         ArrayList<Course> semCourseList = new ArrayList<>();
         boolean isAdded = false;
         for (StudentEnrolment se : studentEnrolmentList
@@ -373,8 +368,17 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 if (!isAdded) {
                     semCourseList.add(se.getCourse());
                 }
+                isAdded = false;
+            }else {
+                System.out.println("Semester " + sem + " has no courses available!!!");
+                break;
             }
         }
+        System.out.println("Display courses in " +sem + ":");
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-35s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.println();
         for (Course c: semCourseList
              ) {
             System.out.printf("%-20s", c.getCourseId());
