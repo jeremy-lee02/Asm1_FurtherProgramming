@@ -239,6 +239,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     @Override
     public void update() {
 
+
     }
     // Get student ID and Course ID to delete the enrolment.
     @Override
@@ -453,7 +454,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     enrolmentSystem.add();
                     break;
                 case 2 :
-                    enrolmentSystem.update();option = 0;break;
+                    enrolmentSystem.update();break;
                 case 3 : enrolmentSystem.delete();break;
                 case 4 : enrolmentSystem.getOne();break;
                 case 5 : enrolmentSystem.getAll();break;
