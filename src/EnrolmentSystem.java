@@ -1,11 +1,18 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import jdk.swing.interop.SwingInterOpUtils;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+//TODO:
+// 1. Save records.
+// 2. Edit text to print to console
+// 3. Edit format.
 
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
@@ -88,6 +95,44 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }
         return fileName;
+    }
+
+    public static boolean isExist(String fileName) throws  IOException{
+        boolean checked = false;
+        File f = new File("src\\" +fileName+ ".csv");
+        if (f.exists()){
+            checked = true;
+        }
+        return checked;
+    }
+
+    public static void writeFile(String filename, String [] arr, List data ) throws IOException {
+        FileWriter csvWriter = new FileWriter("src\\" +filename + ".csv");
+        for (int i = 0; i < arr.length; i++){
+            if (i == arr.length-1){
+                csvWriter.write(arr[i]);
+            }else {
+                csvWriter.write(arr[i]);
+                csvWriter.append(',');
+            }
+        }
+        csvWriter.write("\n");
+        List<List<String>> list = new ArrayList<>();
+        list = data;
+        for (int i = 0;i < list.size(); i++){
+            for (int j = 0; j< arr.length; j++){
+                if (j == arr.length-1){
+                    csvWriter.write(list.get(i).get(0).split(",")[j]);
+                }else {
+                    csvWriter.write(list.get(i).get(0).split(",")[j]);
+                    csvWriter.append(',');
+                }
+            }
+            csvWriter.write("\n");
+        }
+        csvWriter.flush();
+        csvWriter.close();
+
     }
 
     //Display Student and Course
@@ -199,11 +244,20 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }while (!isValidStudent(studentList,input));
         System.out.println("This student is Valid!");
         s = assignStudent(input);
-        System.out.println("Display "+ assignStudent(input).getStudentName() + " Enrolment:" );
+        System.out.println("Display "+ assignStudent(input).getStudentName() + " enrolments:" );
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-40s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.printf("%-20s", "Semester");
+        System.out.println();
         for (StudentEnrolment stE:studentEnrolmentList
         ) {
             if (input.equals(stE.getStudent().getStudentId())){
-                System.out.println("* "+stE.getCourse().getCourseName() + " with course id: " + stE.getCourse().getCourseId());
+                System.out.printf("%-20s", stE.getCourse().getCourseId());
+                System.out.printf("%-40s", stE.getCourse().getCourseName());
+                System.out.printf("%-20s", stE.getCourse().getCredits());
+                System.out.printf("%-20s", stE.getSemester());
+                System.out.println();
             }
         }
         do {
@@ -351,14 +405,21 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             studentID = scanner.nextLine();
         }while (!isValidStudent(studentList,studentID));
         // Display that student's enrolment
-        System.out.println("Display "+ assignStudent(studentID).getStudentName() + " Enrolment:" );
+        System.out.println("Display "+ assignStudent(studentID).getStudentName() + " enrolments:" );
         s = assignStudent(studentID);
+        System.out.printf("%-20s", "CID");
+        System.out.printf("%-40s", "Course name");
+        System.out.printf("%-20s", "Credits");
+        System.out.printf("%-20s", "Semester");
+        System.out.println();
         for (StudentEnrolment stE:studentEnrolmentList
         ) {
             if (studentID.equals(stE.getStudent().getStudentId())){
-                enrolments.add(stE);
-                validCourse.add(stE.getCourse());
-                System.out.println("* "+stE.getCourse().getCourseName() + " with course id: " + stE.getCourse().getCourseId());
+                System.out.printf("%-20s", stE.getCourse().getCourseId());
+                System.out.printf("%-40s", stE.getCourse().getCourseName());
+                System.out.printf("%-20s", stE.getCourse().getCredits());
+                System.out.printf("%-20s", stE.getSemester());
+                System.out.println();
             }
         }
         do {
@@ -386,6 +447,38 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     // Get student ID or Course ID.
     // Display Student info Or Course info.
+    public void saveFile(List list, String [] arr){
+        // Save file
+        int opt = 0;
+        do {
+            System.out.println("Do you want to save this record? [1] YES, [0] NO:");
+            opt = scanner.nextInt();
+            switch (opt){
+                case 1 :
+                    System.out.println("Enter File name:");
+                    Scanner sc = new Scanner(System.in);
+                    String name = sc.nextLine();
+                    try {
+                        if (isExist(name)){
+                            System.out.println("Do you want to override this file? [1] YES, [2] NO:");
+                            opt = scanner.nextInt();
+                            switch (opt){
+                                case 1 :
+                                    writeFile(name,arr,list);
+                                    opt = 0;
+                                case 2: opt = 0;
+                            }
+                        }else {
+                            writeFile(name,arr,list);
+                            opt = 0;
+                        }
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                    break;
+            }
+        }while (opt != 0);
+    }
     public void displayStudentCourses(){
         String sID;
         do {
@@ -403,6 +496,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.printf("%-20s", "Credits");
         System.out.printf("%-20s", "Semester");
         System.out.println();
+        List<List<String>> list = new ArrayList<>();
         for (StudentEnrolment se: studentEnrolmentList
              ) {
             if (se.getStudent().getStudentId().equals(sID)){
@@ -411,8 +505,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.printf("%-20s", se.getCourse().getCredits());
                 System.out.printf("%-20s", se.getSemester());
                 System.out.println();
+                String data = se.getCourse().getCourseId() +","+ se.getCourse().getCourseName() +","+se.getCourse().getCredits()+ ","+se.getSemester();
+                list.add(Arrays.asList(data));
             }
         }
+        String [] arr = {"CID" , "Course Name" , "Credits" ,"Semester"};
+        saveFile(list,arr);
     }
     public void displayCourseStudents(){
         String cID;
@@ -429,6 +527,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.printf("%-30s", "Student name");
         System.out.printf("%-20s", "Date of Birth:");
         System.out.println();
+        List<List<String>> list = new ArrayList<>();
         for (StudentEnrolment se: studentEnrolmentList
         ) {
             if (se.getCourse().getCourseId().equals(cID)){
@@ -436,8 +535,13 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.printf("%-30s", se.getStudent().getStudentName());
                 System.out.printf("%-20s", se.getStudent().getBirthDate());
                 System.out.println();
+                String data = se.getStudent().getStudentId() +"," + se.getStudent().getStudentName() + ","+ se.getStudent().getBirthDate();
+                list.add(Arrays.asList(data));
             }
         }
+        String [] arr = {"SID" , "Student Name" , "BirthDate"};
+        saveFile(list,arr);
+
     }
     public void displayCoursesSem(){
         String sem;
@@ -472,13 +576,20 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 }
             }
         }
+        List<List<String>> list = new ArrayList<>(); // This list will save all data inside an array list
         for (Course c: semCourseList
              ) {
             System.out.printf("%-20s", c.getCourseId());
             System.out.printf("%-35s", c.getCourseName());
             System.out.printf("%-20s", c.getCredits());
             System.out.println();
+            String data = c.getCourseId() + "," + c.getCourseName() + "," + c.getCredits();
+            list.add(Arrays.asList(data));
         }
+        String [] arr = {"CID" , "Course Name" , "Credits"};
+        saveFile(list,arr);
+
+
     }
     @Override
     public void getOne() {
@@ -532,10 +643,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     }
 
-    //TODO:
-    // 1. Save file.
-    // 2. Check if file is saved before exit.
-    // 3. Ask to save if it have not.
+
 
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
