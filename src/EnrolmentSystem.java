@@ -2,10 +2,7 @@
 import jdk.swing.interop.SwingInterOpUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -629,6 +626,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     @Override
     public void getAll() {
         displayAll();
+        List<List<String>> list = new ArrayList<>();
         for (StudentEnrolment se: studentEnrolmentList
              ) {
                 System.out.printf("%-20s", se.getStudent().getStudentId());
@@ -639,10 +637,15 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.printf("%-20s", se.getCourse().getCredits());
                 System.out.printf("%-20s", se.getSemester());
                 System.out.println();
+                String data = se.getStudent().getStudentId()+ "," + se.getStudent().getStudentName() + "," +
+                        se.getStudent().getBirthDate() + "," + se.getCourse().getCourseId() + "," +
+                        se.getCourse().getCourseName() + "," + se.getCourse().getCredits() + "," + se.getSemester();
+                list.add(Arrays.asList(data));
         }
+        String [] arr = {"SID" , "Student Name" , "BirthDate","CID" , "Course Name" , "Credits","Semester"};
+        saveFile(list, arr);
 
     }
-
 
 
     public static void main(String[] args) throws IOException {
@@ -651,7 +654,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         int option;
         do {
             menu();
-            option = getOption();
+            try {
+                option = getOption();
+            }catch (InputMismatchException e){
+                System.out.println(e);
+                option = 0;
+            }
             switch (option){
                 case 1 :
                     enrolmentSystem.add();
@@ -663,6 +671,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 case 5 : enrolmentSystem.getAll();break;
             }
         }while (option!=0);
+
     }
 
 }
