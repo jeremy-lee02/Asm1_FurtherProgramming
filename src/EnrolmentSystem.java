@@ -1,6 +1,3 @@
-
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -153,7 +150,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println();
         System.out.println("-------------------------------------------");
         for (Course c: courseList
-             ) {
+        ) {
             System.out.printf("%-30s" ,c.getCourseId());
             System.out.printf("%-30s" ,c.getCourseName());
             System.out.println();
@@ -165,7 +162,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     // Is valid student
     public boolean isValidStudent(ArrayList<Student> studentList, String sID){
         for (Student s: studentList
-             ) {
+        ) {
             if (s.getStudentId().equals(sID)){
                 return true;
             }
@@ -193,7 +190,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     }
     public boolean isEnrol(Student student, Course course){
         for (StudentEnrolment se: studentEnrolmentList
-             ) {
+        ) {
             if ((se.getStudent().getStudentId().equals(student.getStudentId())) && se.getCourse().getCourseId().equals(course.getCourseId())){
                 return false;
             }
@@ -205,7 +202,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public Student assignStudent(String sID){
         Student newStudent = null;
         for (Student s: studentList
-             ) {
+        ) {
             if (sID.equals(s.getStudentId())){
                 newStudent = s;
                 break;
@@ -216,7 +213,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public Course assignCourse(String cID){
         Course newCourse = null;
         for (Course c: courseList
-             ) {
+        ) {
             if (cID.equals(c.getCourseId())){
                 newCourse = c;
                 break;
@@ -432,7 +429,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         StudentEnrolment oneEnrolment = null;
         boolean isFound = false;
         for (StudentEnrolment se: studentEnrolmentList
-             ) {
+        ) {
             isFound = se.getCourse().getCourseId().equalsIgnoreCase(courseID) && se.getStudent().getStudentId().equalsIgnoreCase(studentID);
             if (isFound) {
                 oneEnrolment = se;
@@ -495,7 +492,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println();
         List<List<String>> list = new ArrayList<>();
         for (StudentEnrolment se: studentEnrolmentList
-             ) {
+        ) {
             if (se.getStudent().getStudentId().equals(sID)){
                 System.out.printf("%-20s", se.getCourse().getCourseId());
                 System.out.printf("%-40s", se.getCourse().getCourseName());
@@ -557,10 +554,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         ArrayList<Course> semCourseList = new ArrayList<>();
         boolean isAdded = false;
         for (StudentEnrolment se : studentEnrolmentList
-             ) {
+        ) {
             if (sem.equals(se.getSemester())){
                 for (Course c: semCourseList
-                     ) {
+                ) {
                     if (c.getCourseId().equals(se.getCourse().getCourseId())){
                         isAdded = true;
                         break;
@@ -575,7 +572,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         List<List<String>> list = new ArrayList<>(); // This list will save all data inside an array list
         for (Course c: semCourseList
-             ) {
+        ) {
             System.out.printf("%-20s", c.getCourseId());
             System.out.printf("%-35s", c.getCourseName());
             System.out.printf("%-20s", c.getCredits());
@@ -628,19 +625,19 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         displayAll();
         List<List<String>> list = new ArrayList<>();
         for (StudentEnrolment se: studentEnrolmentList
-             ) {
-                System.out.printf("%-20s", se.getStudent().getStudentId());
-                System.out.printf("%-30s", se.getStudent().getStudentName());
-                System.out.printf("%-20s", se.getStudent().getBirthDate());
-                System.out.printf("%-20s", se.getCourse().getCourseId());
-                System.out.printf("%-40s", se.getCourse().getCourseName());
-                System.out.printf("%-20s", se.getCourse().getCredits());
-                System.out.printf("%-20s", se.getSemester());
-                System.out.println();
-                String data = se.getStudent().getStudentId()+ "," + se.getStudent().getStudentName() + "," +
-                        se.getStudent().getBirthDate() + "," + se.getCourse().getCourseId() + "," +
-                        se.getCourse().getCourseName() + "," + se.getCourse().getCredits() + "," + se.getSemester();
-                list.add(Arrays.asList(data));
+        ) {
+            System.out.printf("%-20s", se.getStudent().getStudentId());
+            System.out.printf("%-30s", se.getStudent().getStudentName());
+            System.out.printf("%-20s", se.getStudent().getBirthDate());
+            System.out.printf("%-20s", se.getCourse().getCourseId());
+            System.out.printf("%-40s", se.getCourse().getCourseName());
+            System.out.printf("%-20s", se.getCourse().getCredits());
+            System.out.printf("%-20s", se.getSemester());
+            System.out.println();
+            String data = se.getStudent().getStudentId()+ "," + se.getStudent().getStudentName() + "," +
+                    se.getStudent().getBirthDate() + "," + se.getCourse().getCourseId() + "," +
+                    se.getCourse().getCourseName() + "," + se.getCourse().getCredits() + "," + se.getSemester();
+            list.add(Arrays.asList(data));
         }
         String [] arr = {"SID" , "Student Name" , "BirthDate","CID" , "Course Name" , "Credits","Semester"};
         saveFile(list, arr);
@@ -651,27 +648,27 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
         String fileName = readCsv();
+
         int option;
+        boolean exit = true;
         do {
-            menu();
             try {
+                menu();
                 option = getOption();
+                switch (Objects.requireNonNull(option)){
+                    case 1 :
+                        enrolmentSystem.add();
+                        break;
+                    case 2 :
+                        enrolmentSystem.update();break;
+                    case 3 : enrolmentSystem.delete();break;
+                    case 4 : enrolmentSystem.getOne();break;
+                    case 5 : enrolmentSystem.getAll();break;
+                    case 0: exit = false;break;
+                }
             }catch (InputMismatchException e){
-                System.out.println(e);
-                option = 0;
+                System.out.println(e+ ". Please enter again:");
             }
-            switch (option){
-                case 1 :
-                    enrolmentSystem.add();
-                    break;
-                case 2 :
-                    enrolmentSystem.update();break;
-                case 3 : enrolmentSystem.delete();break;
-                case 4 : enrolmentSystem.getOne();break;
-                case 5 : enrolmentSystem.getAll();break;
-            }
-        }while (option!=0);
-
+        }while (exit);
     }
-
 }
