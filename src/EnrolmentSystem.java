@@ -511,11 +511,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         do {
             displayCourse();
             cID = scanner.nextLine();
-            if (!isValidStudent(studentList,cID)){
-                System.out.println("There is no student with "+cID +" id");
+            if (!isValidCourse(courseList,cID)){
+                System.out.println("There is no course with "+cID +" id");
             }
         }while (!isValidCourse(courseList,cID));
-        System.out.println("Valid Student");
+        System.out.println("Valid Course");
         System.out.println("Display student in "+ assignCourse(cID).getCourseName() + " course:");
         System.out.printf("%-20s", "SID");
         System.out.printf("%-30s", "Student name");
