@@ -2,7 +2,7 @@ public class Course {
     private String courseId;
     private String courseName;
     private String credits;
-  ;
+
 
     public Course() {
 
