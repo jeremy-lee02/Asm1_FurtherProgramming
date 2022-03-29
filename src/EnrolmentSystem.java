@@ -156,8 +156,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Enter course ID: ");
 
     }
+
     // Input Validation
-    // Is valid student
+
+    // Check student id is in the list
     public boolean isValidStudent(ArrayList<Student> studentList, String sID){
         for (Student s: studentList
         ) {
@@ -167,7 +169,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return false;
     }
-    // Is valid course.
+    // Check course id is in the list
     public boolean isValidCourse(ArrayList<Course> courseList, String courseID){
         for (Course c : courseList){
             if (c.getCourseId().equals(courseID)){
@@ -176,7 +178,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return false;
     }
-    // Semester Validation
+    // Semester Validation using pattern and regex
     public boolean isValidSem(String sem){
         String regex = "202[0-4][A-C]";
         Pattern pattern = Pattern.compile(regex);
@@ -186,6 +188,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return false;
     }
+    // Check if the student is enrolled or not
     public boolean isEnrol(Student student, Course course){
         for (StudentEnrolment se: studentEnrolmentList
         ) {
@@ -220,7 +223,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         return newCourse;
     }
 
-    // CRUD method
+    // CRUD Override method
+
+    // Add student enrolment into student enrolment list.
     @Override
     public void add() {
         Student s = null;
@@ -320,11 +325,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         do {
             System.out.println("[1] Add");
             System.out.println("[2] Delete");
-            if (validCourse == null) {
-                option = 0;
-            }else {
-                option = getOption();
-            }
+            option = getOption();
             switch (option){
                 case 1:
                     do {
@@ -374,7 +375,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                         }
                     }
                     studentEnrolmentList.remove(oneEnrolment);
-                    System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in" + oneEnrolment.getSemester());
+                    System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in " + oneEnrolment.getSemester());
                     option = 0;
                     break;
             }
@@ -438,8 +439,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     }
 
 
-    // Get student ID or Course ID.
-    // Display Student info Or Course info.
+
     // Save file
     public void saveFile(List list, String [] arr){
         // Save file
@@ -473,6 +473,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }while (opt != 0);
     }
+
+    // Get student ID or Course ID.
+    // Display Student info Or Course info.
     public void displayStudentCourses(){
         String sID;
         do {
@@ -618,7 +621,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.printf("%-20s", "Credits");
         System.out.printf("%-20s", "Semester");
         System.out.println();
-
     }
     @Override
     public void getAll() {
@@ -643,6 +645,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         saveFile(list, arr);
 
     }
+
+    // Main method.
 
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
