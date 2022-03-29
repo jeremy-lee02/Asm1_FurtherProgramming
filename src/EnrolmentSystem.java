@@ -35,7 +35,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     // Read csv file
     // Add data to student and course list
-    public static String readCsv(){
+    public static void readCsv(){
         boolean reading = false;
         String fileName = "1";
 
@@ -86,9 +86,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 reading = false;
             }
         }
-        return fileName;
+
     }
-    //
+    //Check existing file
     public static boolean isExist(String fileName) throws  IOException{
         boolean checked = false;
         File f = new File("src\\" +fileName+ ".csv");
@@ -97,7 +97,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return checked;
     }
-
+    // Write file
     public static void writeFile(String filename, String [] arr, List data ) throws IOException {
         FileWriter csvWriter = new FileWriter("src\\" +filename + ".csv");
         for (int i = 0; i < arr.length; i++){
@@ -440,6 +440,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     // Get student ID or Course ID.
     // Display Student info Or Course info.
+    // Save file
     public void saveFile(List list, String [] arr){
         // Save file
         int opt = 0;
@@ -645,8 +646,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
-        String fileName = readCsv();
-
+        readCsv();
         int option;
         boolean exit = true;
         do {
