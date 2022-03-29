@@ -1,12 +1,10 @@
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//TODO:
-// 1. Save records.
-// 2. Edit text to print to console
-// 3. Edit format.
+
 
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
@@ -291,9 +289,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         int option = 0;
         Student s = null;
         Course c = null;
+        ArrayList<Course> validCourse = new ArrayList<>();
         do {
             displayStudent();
-            System.out.println("Enter student Id to enrol:");
+            System.out.println("Enter student Id:");
             sID = scanner.next();
             if (!isValidStudent(studentList,sID)){
                 System.out.println("Invalid Student");
@@ -314,13 +313,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.printf("%-20s", se.getCourse().getCredits());
                 System.out.printf("%-20s", se.getSemester());
                 System.out.println();
+                validCourse.add(se.getCourse());
             }
         }
         s = assignStudent(sID);
         do {
             System.out.println("[1] Add");
             System.out.println("[2] Delete");
-            option = getOption();
+            if (validCourse == null) {
+                option = 0;
+            }else {
+                option = getOption();
+            }
             switch (option){
                 case 1:
                     do {
@@ -353,20 +357,13 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     option = 0;
                     break;
                 case 2:
-                    ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
-                    ArrayList<Course> validCourse = new ArrayList<>();
-                    for (StudentEnrolment stE:studentEnrolmentList
-                    ) {
-                        if (sID.equals(stE.getStudent().getStudentId())){
-                            enrolments.add(stE);
-                            validCourse.add(stE.getCourse());
-                        }
-                    }
                     do {
-                        //System.out.println("Enter Course ID:");
-                        course = scanner.nextLine();
+                        System.out.println("Enter Course ID:");
+                        course = scanner.next();
+                        if (!isValidCourse(validCourse,course)){
+                            System.out.println("Invalid");
+                        }
                     }while (!isValidCourse(validCourse,course));
-                    c = assignCourse(course);
                     StudentEnrolment oneEnrolment = null;
                     boolean isFound = false;
                     for (StudentEnrolment stE: studentEnrolmentList
@@ -378,6 +375,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     }
                     studentEnrolmentList.remove(oneEnrolment);
                     System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in" + oneEnrolment.getSemester());
+                    option = 0;
                     break;
             }
         }while(option!=0);
@@ -391,7 +389,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         String studentID;
         String courseID;
         displayStudent();
-        ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
+        //ArrayList<StudentEnrolment> enrolments = new ArrayList<>();
         ArrayList<Course> validCourse = new ArrayList<>();
         //Ask student ID and display
         do {
@@ -414,8 +412,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.printf("%-20s", stE.getCourse().getCredits());
                 System.out.printf("%-20s", stE.getSemester());
                 System.out.println();
+                validCourse.add(stE.getCourse());
             }
         }
+        System.out.println(validCourse);
+
         do {
             System.out.println("Enter Course ID of that student:");
             courseID = scanner.nextLine();
@@ -423,9 +424,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.println("Invalid");
             }
         }while (!isValidCourse(validCourse,courseID));
-        c = assignCourse(courseID);
-        System.out.println(s);
-        System.out.println(c);
         StudentEnrolment oneEnrolment = null;
         boolean isFound = false;
         for (StudentEnrolment se: studentEnrolmentList
@@ -438,6 +436,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         studentEnrolmentList.remove(oneEnrolment);
         System.out.println(oneEnrolment.getStudent().getStudentName() + " has been removed from " + oneEnrolment.getCourse().getCourseName() + " in" + oneEnrolment.getSemester());
     }
+
 
     // Get student ID or Course ID.
     // Display Student info Or Course info.
@@ -643,7 +642,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         saveFile(list, arr);
 
     }
-
 
     public static void main(String[] args) throws IOException {
         EnrolmentSystem enrolmentSystem = new EnrolmentSystem();
