@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0dac0e8c-aa24-41a8-82af-e806ff41ed01" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/Enrollment System.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/Course.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/EnrolmentSystem$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/EnrolmentSystem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/Student.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/StudentEnrolment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/out/production/Enrollment System/A1_FurtherProgramming/StudentEnrolmentManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Enrollment System/src" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="26ghU8DHZgYmQ9TqfyGpCtLqYfU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Asm1_FurtherProgramming" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0dac0e8c-aa24-41a8-82af-e806ff41ed01" name="Changes" comment="" />
+      <created>1647851151421</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647851151421</updated>
+    </task>
+    <servers />
+  </component>
+</project>
